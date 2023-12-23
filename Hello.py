@@ -4,6 +4,12 @@ import numpy as np
 if 'data' not in st.session_state:
     st.session_state.data = np.array([0])
 
+if 'clicked' not in st.session_state:
+    st.session_state.clicked = False
+
+def click_button():
+    st.session_state.clicked = True
+
 def run():
     st.set_page_config(
         page_title="Implementasi SAW",
@@ -34,13 +40,18 @@ def run():
 
     st.write("Nilai C1: ", c1)
 
-    st.write("Data = ", st.session_state.data)
-
-    st.button("Simpan", on_click=simpanData(c1), type='primary')
+    if st.button("Simpan", type='primary', on_click=click_button):
+        simpanData(c1)
+    
+    if st.session_state.clicked:
+        st.write("Data = ", st.session_state.data)
 
 
 def simpanData(dataBaru):
-    np.append(st.session_state.data, dataBaru)
+    st.write("Simpan data baru")
+    dataLama = st.session_state.data
+    tambahan = np.append(dataLama, dataBaru)
+    st.session_state.data = tambahan
 
 
 if __name__ == "__main__":
