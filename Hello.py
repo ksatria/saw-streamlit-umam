@@ -60,6 +60,13 @@ def calculate_saw(values, weight):
 
     return all_saw
 
+def ranking(vector):
+    temp = vector.argsort()
+    ranks = np.empty_like(temp)
+    ranks[temp] = np.arange(len(vector))
+
+    return len(vector) - ranks
+
 def run():
     st.set_page_config(
         page_title="Implementasi SAW",
@@ -104,16 +111,36 @@ def run():
         df = pd.DataFrame(data, columns=('C1','C2','C3','C4','C5'))
         st.dataframe(df)
 
+        if st.button("Proses"):
+            prosesData()
+
 
 def simpanData(c1,c2,c3,c4,c5):
-    st.write("Simpan data baru")
-
     if 'nilai_kriteria' not in st.session_state:
         st.session_state.nilai_kriteria = np.array([[c1,c2,c3,c4,c5]])
     else:
         dataLama = st.session_state.nilai_kriteria
         dataBaru = np.append(dataLama, [[c1,c2,c3,c4,c5]], axis=0)
         st.session_state.nilai_kriteria = dataBaru
+
+def prosesData():
+    A = st.session_state.nilai_kriteria
+
+    norm_a = sample_norm(A, L)
+    saw = calculate_saw(norm_a, W)
+    rank = ranking(np.asarray(saw))
+
+    st.write("Nilai alternatif:")
+    st.text(A)
+
+    st.write("Normalisasi nilai alternatif:")
+    st.text(norm_a)
+
+    st.write("Perhitungan nilai SAW:")
+    st.text(saw)
+
+    st.write("Perankingan:")
+    st.text(rank)
 
 
 if __name__ == "__main__":
