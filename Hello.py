@@ -13,7 +13,7 @@ def click_button():
     st.session_state.clicked = True
 
 def sample_norm(values, label):
-    if not values.shape[0] == label.shape[0]:
+    if not values.shape[1] == label.shape[0]:
         st.write('Jumlah kriteria dan label tidak sama')
         return
 
@@ -36,7 +36,7 @@ def sample_norm(values, label):
     return np.array(norm_all)
 
 def calculate_saw(values, weight):
-    if not values.shape[0] == weight.shape[0]:
+    if not values.shape[1] == weight.shape[0]:
         print('Jumlah kriteria dan bobot tidak sama')
         return
 
